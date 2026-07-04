@@ -1,0 +1,1465 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facebook Content Maker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0866FF;
+            --primary-dark: #0653D4;
+            --primary-light: #E7F0FF;
+            --secondary: #1A1D21;
+            --accent: #FF6B35;
+            --accent-2: #00D4AA;
+            --bg-dark: #0D1117;
+            --bg-card: #161B22;
+            --bg-elevated: #21262D;
+            --text-primary: #F0F6FC;
+            --text-secondary: #8B949E;
+            --text-muted: #484F58;
+            --border: #30363D;
+            --success: #3FB950;
+            --warning: #D29922;
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --shadow-glow: 0 0 40px rgba(8, 102, 255, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(8, 102, 255, 0.15) 0%, transparent 70%);
+            top: -200px;
+            right: -200px;
+            animation: float 15s ease-in-out infinite;
+        }
+
+        .bg-animation::after {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(255, 107, 53, 0.1) 0%, transparent 70%);
+            bottom: -150px;
+            left: -150px;
+            animation: float 20s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(50px, 30px) scale(1.1); }
+            66% { transform: translate(-30px, 50px) scale(0.95); }
+        }
+
+        /* Header */
+        header {
+            position: relative;
+            z-index: 10;
+            padding: 1.5rem 2rem;
+            background: rgba(13, 17, 23, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-1);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4);
+            animation: pulse-glow 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4); }
+            50% { box-shadow: 0 8px 48px rgba(102, 126, 234, 0.6); }
+        }
+
+        .logo h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #fff 0%, #8B949E 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo span {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 12px;
+            font-family: inherit;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 20px rgba(8, 102, 255, 0.4);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(8, 102, 255, 0.5);
+        }
+
+        .btn-secondary {
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border);
+            transform: translateY(-2px);
+        }
+
+        /* Main Container */
+        .main-container {
+            position: relative;
+            z-index: 5;
+            display: grid;
+            grid-template-columns: 1fr 1.2fr 1fr;
+            gap: 2rem;
+            padding: 2rem;
+            max-width: 1600px;
+            margin: 0 auto;
+            min-height: calc(100vh - 100px);
+        }
+
+        /* Panel Styles */
+        .panel {
+            background: var(--bg-card);
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            animation: slideUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .panel:nth-child(1) { animation-delay: 0.1s; }
+        .panel:nth-child(2) { animation-delay: 0.2s; }
+        .panel:nth-child(3) { animation-delay: 0.3s; }
+
+        @keyframes slideUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .panel-header {
+            padding: 1.25rem 1.5rem;
+            background: var(--bg-elevated);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .panel-header i {
+            width: 36px;
+            height: 36px;
+            background: var(--primary-light);
+            color: var(--primary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .panel-header h2 {
+            font-size: 1rem;
+            font-weight: 700;
+        }
+
+        .panel-header span {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .panel-content {
+            padding: 1.5rem;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        /* Editor Panel */
+        .editor-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .editor-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .section-label i {
+            font-size: 0.75rem;
+            color: var(--primary);
+        }
+
+        /* Text Input */
+        .text-input {
+            width: 100%;
+            background: var(--bg-dark);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 1rem;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 1rem;
+            resize: vertical;
+            min-height: 120px;
+            transition: all 0.3s ease;
+        }
+
+        .text-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(8, 102, 255, 0.1);
+        }
+
+        .text-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        /* Upload Zone */
+        .upload-zone {
+            background: var(--bg-dark);
+            border: 2px dashed var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .upload-zone:hover, .upload-zone.dragover {
+            border-color: var(--primary);
+            background: rgba(8, 102, 255, 0.05);
+        }
+
+        .upload-zone i {
+            font-size: 3rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .upload-zone:hover i {
+            color: var(--primary);
+            transform: scale(1.1);
+        }
+
+        .upload-zone h3 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .upload-zone p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .upload-zone input {
+            display: none;
+        }
+
+        .upload-preview {
+            position: relative;
+            margin-top: 1rem;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .upload-preview img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+
+        .upload-preview .remove-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            width: 32px;
+            height: 32px;
+            background: rgba(0, 0, 0, 0.7);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .upload-preview .remove-btn:hover {
+            background: var(--accent);
+        }
+
+        /* Template Grid */
+        .template-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+        }
+
+        .template-item {
+            aspect-ratio: 1;
+            background: var(--bg-dark);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .template-item:hover {
+            border-color: var(--primary);
+            transform: scale(1.02);
+        }
+
+        .template-item.active {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(8, 102, 255, 0.2);
+        }
+
+        .template-item::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            opacity: 0.9;
+        }
+
+        .template-item[data-bg="gradient-1"]::before { background: var(--gradient-1); }
+        .template-item[data-bg="gradient-2"]::before { background: var(--gradient-2); }
+        .template-item[data-bg="gradient-3"]::before { background: var(--gradient-3); }
+        .template-item[data-bg="dark"]::before { background: #1a1a2e; }
+        .template-item[data-bg="warm"]::before { background: linear-gradient(135deg, #f5af19 0%, #f12711 100%); }
+        .template-item[data-bg="cool"]::before { background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%); }
+        .template-item[data-bg="nature"]::before { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
+        .template-item[data-bg="sunset"]::before { background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); }
+
+        .template-item .check-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 36px;
+            height: 36px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .template-item.active .check-icon {
+            opacity: 1;
+        }
+
+        /* Style Options */
+        .style-options {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .style-btn {
+            padding: 0.6rem 1rem;
+            background: var(--bg-dark);
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .style-btn:hover {
+            border-color: var(--primary);
+            color: var(--text-primary);
+        }
+
+        .style-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        /* Color Picker */
+        .color-picker-row {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            margin-top: 0.75rem;
+        }
+
+        .color-presets {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .color-preset {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .color-preset:hover {
+            transform: scale(1.1);
+        }
+
+        .color-preset.active {
+            border-color: white;
+            box-shadow: 0 0 0 2px var(--primary);
+        }
+
+        .custom-color {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .custom-color input[type="color"] {
+            width: 36px;
+            height: 36px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            background: none;
+        }
+
+        /* Font Size Slider */
+        .slider-container {
+            margin-top: 0.75rem;
+        }
+
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .slider-value {
+            background: var(--bg-elevated);
+            padding: 0.25rem 0.75rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            background: var(--bg-dark);
+            border-radius: 3px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--primary);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(8, 102, 255, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        /* Preview Panel */
+        .preview-panel {
+            display: flex;
+            flex-direction: column;
+            height: fit-content;
+            position: sticky;
+            top: 2rem;
+        }
+
+        .preview-container {
+            background: #F0F2F5;
+            border-radius: 12px;
+            padding: 1rem;
+            min-height: 500px;
+        }
+
+        .facebook-post {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .fb-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+        }
+
+        .fb-avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+        }
+
+        .fb-user-info h4 {
+            color: #1C1E21;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .fb-user-info span {
+            color: #65676B;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .fb-content {
+            padding: 0 1rem 1rem;
+            color: #1C1E21;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .fb-media {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1;
+            overflow: hidden;
+        }
+
+        .fb-media .preview-bg {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .fb-media .preview-text {
+            position: relative;
+            z-index: 2;
+            padding: 2rem;
+            text-align: center;
+            color: white;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            word-wrap: break-word;
+            max-width: 90%;
+        }
+
+        .fb-media img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .fb-media img + .preview-text {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .fb-actions {
+            display: flex;
+            justify-content: space-around;
+            padding: 0.5rem 1rem;
+            border-top: 1px solid #DCE0E4;
+        }
+
+        .fb-action-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #65676B;
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .fb-action-btn:hover {
+            background: #F0F2F5;
+        }
+
+        .fb-action-btn i {
+            font-size: 1.1rem;
+        }
+
+        /* Tools Panel */
+        .tool-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+        }
+
+        .tool-item {
+            background: var(--bg-dark);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .tool-item:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .tool-item i {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .tool-item h4 {
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .tool-item p {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        /* Effects Section */
+        .effect-toggles {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .effect-toggle {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            background: var(--bg-dark);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .effect-toggle:hover {
+            background: var(--bg-elevated);
+        }
+
+        .effect-toggle span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .toggle-switch {
+            width: 48px;
+            height: 26px;
+            background: var(--border);
+            border-radius: 13px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-switch::before {
+            content: '';
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            background: white;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .effect-toggle.active .toggle-switch {
+            background: var(--primary);
+        }
+
+        .effect-toggle.active .toggle-switch::before {
+            left: 24px;
+        }
+
+        /* Export Section */
+        .export-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+        }
+
+        .export-btn {
+            padding: 1rem;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .export-btn i {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .export-btn h4 {
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .export-btn p {
+            font-size: 0.7rem;
+            opacity: 0.8;
+        }
+
+        .export-btn.primary {
+            background: var(--gradient-1);
+            color: white;
+            grid-column: span 2;
+        }
+
+        .export-btn.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .export-btn.secondary {
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .export-btn.secondary:hover {
+            background: var(--border);
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--border);
+            z-index: 1000;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        .toast.success {
+            border-color: var(--success);
+        }
+
+        .toast.success i {
+            color: var(--success);
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .preview-panel {
+                position: relative;
+                top: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .main-container {
+                padding: 1rem;
+            }
+            
+            .template-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-muted);
+        }
+
+        /* Animations */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .shake {
+            animation: shake 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+
+    <header>
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fab fa-facebook-f"></i>
+            </div>
+            <div>
+                <h1>Facebook Content Maker</h1>
+                <span>Buat konten menarik untuk Facebook Anda</span>
+            </div>
+        </div>
+        <div class="header-actions">
+            <button class="btn btn-secondary" onclick="resetAll()">
+                <i class="fas fa-redo"></i> Reset
+            </button>
+            <button class="btn btn-primary" onclick="downloadPost()">
+                <i class="fas fa-download"></i> Download
+            </button>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <!-- Editor Panel -->
+        <div class="panel">
+            <div class="panel-header">
+                <i class="fas fa-edit"></i>
+                <div>
+                    <h2>Editor</h2>
+                    <span>Kustomisasi konten Anda</span>
+                </div>
+            </div>
+            <div class="panel-content">
+                <!-- Text Input -->
+                <div class="editor-section">
+                    <div class="section-label">
+                        <i class="fas fa-font"></i>
+                        Teks Postingan
+                    </div>
+                    <textarea class="text-input" id="postText" placeholder="Tulis teks postingan Anda di sini..." oninput="updatePreview()">Buat konten yang menarik untuk meningkatkan engagement!</parameter>
+                </div>
+
+                <!-- Background Template -->
+                <div class="editor-section">
+                    <div class="section-label">
+                        <i class="fas fa-palette"></i>
+                        Template Latar Belakang
+                    </div>
+                    <div class="template-grid" id="templateGrid">
+                        <div class="template-item active" data-bg="gradient-1" onclick="selectTemplate(this)">
+                            <div class="check-icon"><i class="fas fa-check"></i></div>
+                        </div>
+                        <div class="template-item" data-bg="gradient-2" onclick="selectTemplate(this)">
+                            <div class="check-icon"><i class="fas fa-check"></i></div>
+                        </div>
+                        <div class="template-item" data-bg="gradient-3" onclick="selectTemplate(this)">
+                            <div class="check-icon"><i class="fas fa-check"></i></div>
+                        </div>
+                        <div class="template-item" data-bg="dark" onclick="selectTemplate(this)">
+                            <div class="check-icon"><i class="fas fa-check"></i></div>
+                        </div>
+                        <div class="template-item" data-bg="warm" onclick="selectTemplate(this)">
+                            <div class="check-icon"><i class="fas fa-check"></i></div>
+                        </div>
+                        <div class="template-item" data-bg="cool" onclick="selectTemplate(this)">
+                            <div class="check-icon"><i class="fas fa-check"></i></div>
+                        </div>
+                        <div class="template-item" data-bg="nature" onclick="selectTemplate(this)">
+                            <div class="check-icon"><i class="fas fa-check"></i></div>
+                        </div>
+                        <div class="template-item" data-bg="sunset" onclick="selectTemplate(this)">
+                            <div class="check-icon"><i class="fas fa-check"></i></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Text Color -->
+                <div class="editor-section">
+                    <div class="section-label">
+                        <i class="fas fa-tint"></i>
+                        Warna Teks
+                    </div>
+                    <div class="color-presets">
+                        <div class="color-preset active" style="background: #FFFFFF" data-color="#FFFFFF" onclick="selectColor(this)"></div>
+                        <div class="color-preset" style="background: #000000" data-color="#000000" onclick="selectColor(this)"></div>
+                        <div class="color-preset" style="background: #FF6B35" data-color="#FF6B35" onclick="selectColor(this)"></div>
+                        <div class="color-preset" style="background: #00D4AA" data-color="#00D4AA" onclick="selectColor(this)"></div>
+                        <div class="color-preset" style="background: #FFD700" data-color="#FFD700" onclick="selectColor(this)"></div>
+                        <div class="color-preset" style="background: #FF69B4" data-color="#FF69B4" onclick="selectColor(this)"></div>
+                        <div class="color-preset" style="background: #00BFFF" data-color="#00BFFF" onclick="selectColor(this)"></div>
+                        <div class="color-preset" style="background: #8B5CF6" data-color="#8B5CF6" onclick="selectColor(this)"></div>
+                    </div>
+                </div>
+
+                <!-- Font Size -->
+                <div class="editor-section">
+                    <div class="section-label">
+                        <i class="fas fa-text-height"></i>
+                        Ukuran Font
+                    </div>
+                    <div class="slider-container">
+                        <div class="slider-header">
+                            <span>Ukuran Teks</span>
+                            <span class="slider-value" id="fontSizeValue">32px</span>
+                        </div>
+                        <input type="range" id="fontSizeSlider" min="16" max="64" value="32" oninput="updateFontSize(this.value)">
+                    </div>
+                </div>
+
+                <!-- Text Style -->
+                <div class="editor-section">
+                    <div class="section-label">
+                        <i class="fas fa-magic"></i>
+                        Gaya Teks
+                    </div>
+                    <div class="style-options">
+                        <button class="style-btn active" data-style="normal" onclick="selectTextStyle(this)">
+                            <i class="fas fa-font"></i> Normal
+                        </button>
+                        <button class="style-btn" data-style="bold" onclick="selectTextStyle(this)">
+                            <i class="fas fa-bold"></i> Bold
+                        </button>
+                        <button class="style-btn" data-style="italic" onclick="selectTextStyle(this)">
+                            <i class="fas fa-italic"></i> Italic
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Preview Panel -->
+        <div class="panel preview-panel">
+            <div class="panel-header">
+                <i class="fas fa-eye"></i>
+                <div>
+                    <h2>Preview</h2>
+                    <span>Pratinjau postingan Anda</span>
+                </div>
+            </div>
+            <div class="panel-content">
+                <div class="preview-container">
+                    <div class="facebook-post" id="facebookPost">
+                        <div class="fb-header">
+                            <div class="fb-avatar">U</div>
+                            <div class="fb-user-info">
+                                <h4>User Facebook</h4>
+                                <span><i class="fas fa-globe-americas"></i> Baru saja • <i class="fas fa-user-friends"></i></span>
+                            </div>
+                        </div>
+                        <div class="fb-content" id="fbContent">Buat konten yang menarik untuk meningkatkan engagement!</div>
+                        <div class="fb-media" id="fbMedia">
+                            <div class="preview-bg" id="previewBg" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                                <div class="preview-text" id="previewText" style="font-size: 32px; color: #FFFFFF;">
+                                    Buat konten yang menarik untuk meningkatkan engagement!
+                                </div>
+                            </div>
+                        </div>
+                        <div class="fb-actions">
+                            <div class="fb-action-btn"><i class="far fa-thumbs-up"></i> Suka</div>
+                            <div class="fb-action-btn"><i class="far fa-comment"></i> Komentar</div>
+                            <div class="fb-action-btn"><i class="fas fa-share"></i> Bagikan</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tools Panel -->
+        <div class="panel">
+            <div class="panel-header">
+                <i class="fas fa-tools"></i>
+                <div>
+                    <h2>Tools & Export</h2>
+                    <span>Fitur tambahan</span>
+                </div>
+            </div>
+            <div class="panel-content">
+                <!-- Image Upload -->
+                <div class="editor-section">
+                    <div class="section-label">
+                        <i class="fas fa-image"></i>
+                        Upload Gambar
+                    </div>
+                    <div class="upload-zone" id="uploadZone" onclick="document.getElementById('imageInput').click()">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <h3>Klik atau seret file</h3>
+                        <p>JPG, PNG, atau GIF (Maks. 5MB)</p>
+                        <input type="file" id="imageInput" accept="image/*" onchange="handleImageUpload(this)">
+                    </div>
+                    <div class="upload-preview" id="uploadPreview" style="display: none;">
+                        <img id="previewImage" src="" alt="Preview">
+                        <button class="remove-btn" onclick="removeImage()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Quick Tools -->
+                <div class="editor-section">
+                    <div class="section-label">
+                        <i class="fas fa-bolt"></i>
+                        Tools Cepat
+                    </div>
+                    <div class="tool-grid">
+                        <div class="tool-item" onclick="addEmoji('🔥')">
+                            <i class="fas fa-fire"></i>
+                            <h4>Fire</h4>
+                            <p>Emoji api</p>
+                        </div>
+                        <div class="tool-item" onclick="addEmoji('💡')">
+                            <i class="fas fa-lightbulb"></i>
+                            <h4>Ideas</h4>
+                            <p>Emoji ide</p>
+                        </div>
+                        <div class="tool-item" onclick="addEmoji('❤️')">
+                            <i class="fas fa-heart"></i>
+                            <h4>Love</h4>
+                            <p>Emoji cinta</p>
+                        </div>
+                        <div class="tool-item" onclick="addEmoji('🚀')">
+                            <i class="fas fa-rocket"></i>
+                            <h4>Rocket</h4>
+                            <p>Emoji roket</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Effects -->
+                <div class="editor-section">
+                    <div class="section-label">
+                        <i class="fas fa-wand-magic-sparkles"></i>
+                        Efek
+                    </div>
+                    <div class="effect-toggles">
+                        <div class="effect-toggle" id="shadowToggle" onclick="toggleEffect('shadow')">
+                            <span><i class="fas fa-square"></i> Bayangan Teks</span>
+                            <div class="toggle-switch"></div>
+                        </div>
+                        <div class="effect-toggle active" id="gradientToggle" onclick="toggleEffect('gradient')">
+                            <span><i class="fas fa-gradient"></i> Gradien Teks</span>
+                            <div class="toggle-switch"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Export Options -->
+                <div class="editor-section">
+                    <div class="section-label">
+                        <i class="fas fa-download"></i>
+                        Export
+                    </div>
+                    <div class="export-options">
+                        <button class="export-btn primary" onclick="downloadPost()">
+                            <i class="fas fa-download"></i>
+                            <h4>Download PNG</h4>
+                            <p>Unduh gambar kualitas tinggi</p>
+                        </button>
+                        <button class="export-btn secondary" onclick="copyToClipboard()">
+                            <i class="fas fa-copy"></i>
+                            <h4>Salin Teks</h4>
+                        </button>
+                        <button class="export-btn secondary" onclick="sharePost()">
+                            <i class="fas fa-share-alt"></i>
+                            <h4>Bagikan</h4>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage">Berhasil!</span>
+    </div>
+
+    <script>
+        // State
+        let currentTemplate = 'gradient-1';
+        let currentTextColor = '#FFFFFF';
+        let currentTextStyle = 'normal';
+        let textShadowEnabled = false;
+        let textGradientEnabled = true;
+        let uploadedImage = null;
+
+        // Template backgrounds
+        const templateBackgrounds = {
+            'gradient-1': 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            'gradient-2': 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+            'gradient-3': 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+            'dark': 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
+            'warm': 'linear-gradient(135deg, #f5af19 0%, #f12711 100%)',
+            'cool': 'linear-gradient(135deg, #00c6ff 0%, #0072ff 100%)',
+            'nature': 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)',
+            'sunset': 'linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)'
+        };
+
+        // Text styles
+        const textStyles = {
+            'normal': { fontWeight: 'normal', fontStyle: 'normal' },
+            'bold': { fontWeight: 'bold', fontStyle: 'normal' },
+            'italic': { fontWeight: 'normal', fontStyle: 'italic' }
+        };
+
+        // Select template
+        function selectTemplate(element) {
+            document.querySelectorAll('.template-item').forEach(item => item.classList.remove('active'));
+            element.classList.add('active');
+            currentTemplate = element.dataset.bg;
+            updatePreview();
+        }
+
+        // Select color
+        function selectColor(element) {
+            document.querySelectorAll('.color-preset').forEach(item => item.classList.remove('active'));
+            element.classList.add('active');
+            currentTextColor = element.dataset.color;
+            updatePreview();
+        }
+
+        // Select text style
+        function selectTextStyle(element) {
+            document.querySelectorAll('.style-btn').forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
+            currentTextStyle = element.dataset.style;
+            updatePreview();
+        }
+
+        // Update font size
+        function updateFontSize(value) {
+            document.getElementById('fontSizeValue').textContent = value + 'px';
+            updatePreview();
+        }
+
+        // Toggle effect
+        function toggleEffect(effect) {
+            const toggle = document.getElementById(effect + 'Toggle');
+            toggle.classList.toggle('active');
+            
+            if (effect === 'shadow') {
+                textShadowEnabled = toggle.classList.contains('active');
+            } else if (effect === 'gradient') {
+                textGradientEnabled = toggle.classList.contains('active');
+            }
+            
+            updatePreview();
+        }
+
+        // Update preview
+        function updatePreview() {
+            const text = document.getElementById('postText').value;
+            const fontSize = document.getElementById('fontSizeSlider').value;
+            
+            // Update content text
+            document.getElementById('fbContent').textContent = text;
+            
+            // Update preview text
+            const previewText = document.getElementById('previewText');
+            previewText.textContent = text;
+            previewText.style.fontSize = fontSize + 'px';
+            previewText.style.color = currentTextColor;
+            previewText.style.fontWeight = textStyles[currentTextStyle].fontWeight;
+            previewText.style.fontStyle = textStyles[currentTextStyle].fontStyle;
+            
+            // Text shadow
+            if (textShadowEnabled) {
+                previewText.style.textShadow = '2px 2px 8px rgba(0, 0, 0, 0.5)';
+            } else {
+                previewText.style.textShadow = '2px 2px 4px rgba(0, 0, 0, 0.3)';
+            }
+            
+            // Text gradient
+            if (textGradientEnabled && currentTextColor === '#FFFFFF') {
+                previewText.style.background = 'linear-gradient(135deg, #FFD700 0%, #FF69B4 50%, #00BFFF 100%)';
+                previewText.style.backgroundClip = 'text';
+                previewText.style.webkitBackgroundClip = 'text';
+                previewText.style.webkitTextFillColor = 'transparent';
+            } else {
+                previewText.style.background = 'none';
+                previewText.style.backgroundClip = 'initial';
+                previewText.style.webkitBackgroundClip = 'initial';
+                previewText.style.webkitTextFillColor = currentTextColor;
+            }
+            
+            // Update background
+            const previewBg = document.getElementById('previewBg');
+            if (uploadedImage) {
+                previewBg.style.background = `url(${uploadedImage}) center/cover`;
+                previewBg.style.backgroundColor = templateBackgrounds[currentTemplate];
+            } else {
+                previewBg.style.background = templateBackgrounds[currentTemplate];
+            }
+        }
+
+        // Handle image upload
+        function handleImageUpload(input) {
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                
+                if (file.size > 5 * 1024 * 1024) {
+                    showToast('File terlalu besar! Maks 5MB', 'error');
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    uploadedImage = e.target.result;
+                    document.getElementById('previewImage').src = uploadedImage;
+                    document.getElementById('uploadPreview').style.display = 'block';
+                    document.getElementById('uploadZone').style.display = 'none';
+                    updatePreview();
+                    showToast('Gambar berhasil diupload!', 'success');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Remove image
+        function removeImage() {
+            uploadedImage = null;
+            document.getElementById('imageInput').value = '';
+            document.getElementById('uploadPreview').style.display = 'none';
+            document.getElementById('uploadZone').style.display = 'block';
+            updatePreview();
+            showToast('Gambar berhasil dihapus', 'success');
+        }
+
+        // Add emoji
+        function addEmoji(emoji) {
+            const textarea = document.getElementById('postText');
+            const cursorPos = textarea.selectionStart;
+            const textBefore = textarea.value.substring(0, cursorPos);
+            const textAfter = textarea.value.substring(cursorPos);
+            textarea.value = textBefore + emoji + textAfter;
+            textarea.focus();
+            textarea.selectionStart = textarea.selectionEnd = cursorPos + emoji.length;
+            updatePreview();
+        }
+
+        // Download post
+        function downloadPost() {
+            showToast('Fitur download akan segera hadir!', 'success');
+        }
+
+        // Copy to clipboard
+        function copyToClipboard() {
+            const text = document.getElementById('postText').value;
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('Teks berhasil disalin!', 'success');
+            }).catch(() => {
+                showToast('Gagal menyalin teks', 'error');
+            });
+        }
+
+        // Share post
+        function sharePost() {
+            showToast('Fitur share akan segera hadir!', 'success');
+        }
+
+        // Reset all
+        function resetAll() {
+            document.getElementById('postText').value = '';
+            document.getElementById('fontSizeSlider').value = 32;
+            document.getElementById('fontSizeValue').textContent = '32px';
+            
+            document.querySelectorAll('.template-item').forEach(item => item.classList.remove('active'));
+            document.querySelector('.template-item[data-bg="gradient-1"]').classList.add('active');
+            currentTemplate = 'gradient-1';
+            
+            document.querySelectorAll('.color-preset').forEach(item => item.classList.remove('active'));
+            document.querySelector('.color-preset[data-color="#FFFFFF"]').classList.add('active');
+            currentTextColor = '#FFFFFF';
+            
+            document.querySelectorAll('.style-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector('.style-btn[data-style="normal"]').classList.add('active');
+            currentTextStyle = 'normal';
+            
+            removeImage();
+            updatePreview();
+            showToast('Semua pengaturan direset!', 'success');
+        }
+
+        // Show toast
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            toastMessage.textContent = message;
+            toast.className = 'toast show ' + type;
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Drag and drop
+        const uploadZone = document.getElementById('uploadZone');
+        
+        uploadZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadZone.classList.add('dragover');
+        });
+        
+        uploadZone.addEventListener('dragleave', () => {
+            uploadZone.classList.remove('dragover');
+        });
+        
+        uploadZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadZone.classList.remove('dragover');
+            const file = e.dataTransfer.files[0];
+            if (file && file.type.startsWith('image/')) {
+                document.getElementById('imageInput').files = e.dataTransfer.files;
+                handleImageUpload(document.getElementById('imageInput'));
+            }
+        });
+
+        // Initialize
+        updatePreview();
+    </script>
+</body>
+</html>
