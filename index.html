@@ -4,29 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Facebook Content Maker</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --primary: #0866FF;
-            --primary-dark: #0653D4;
-            --primary-light: #E7F0FF;
-            --secondary: #1A1D21;
-            --accent: #FF6B35;
+            --primary-dark: #0550D6;
+            --primary-light: rgba(8, 102, 255, 0.12);
+            --secondary: #1C1E21;
+            --accent: #E74C3C;
             --accent-2: #00D4AA;
-            --bg-dark: #0D1117;
-            --bg-card: #161B22;
-            --bg-elevated: #21262D;
-            --text-primary: #F0F6FC;
-            --text-secondary: #8B949E;
-            --text-muted: #484F58;
-            --border: #30363D;
-            --success: #3FB950;
-            --warning: #D29922;
+            --bg-dark: #0A0A0F;
+            --bg-card: rgba(255, 255, 255, 0.03);
+            --bg-card-hover: rgba(255, 255, 255, 0.06);
+            --bg-elevated: rgba(255, 255, 255, 0.05);
+            --text-primary: #FFFFFF;
+            --text-secondary: rgba(255, 255, 255, 0.6);
+            --text-muted: rgba(255, 255, 255, 0.35);
+            --border: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(255, 255, 255, 0.15);
+            --success: #10B981;
+            --warning: #F59E0B;
             --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
             --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            --shadow-glow: 0 0 40px rgba(8, 102, 255, 0.3);
+            --shadow-soft: 0 8px 32px rgba(0, 0, 0, 0.4);
+            --shadow-glow: 0 0 60px rgba(8, 102, 255, 0.2);
         }
 
         * {
@@ -35,12 +38,17 @@
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-family: 'Outfit', sans-serif;
             background: var(--bg-dark);
             color: var(--text-primary);
             min-height: 100vh;
             overflow-x: hidden;
+            line-height: 1.6;
         }
 
         /* Animated Background */
@@ -58,42 +66,55 @@
         .bg-animation::before {
             content: '';
             position: absolute;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(8, 102, 255, 0.15) 0%, transparent 70%);
-            top: -200px;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(8, 102, 255, 0.12) 0%, transparent 70%);
+            top: -300px;
             right: -200px;
-            animation: float 15s ease-in-out infinite;
+            animation: float 20s ease-in-out infinite;
+            filter: blur(60px);
         }
 
         .bg-animation::after {
             content: '';
             position: absolute;
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(255, 107, 53, 0.1) 0%, transparent 70%);
-            bottom: -150px;
-            left: -150px;
-            animation: float 20s ease-in-out infinite reverse;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(118, 75, 162, 0.1) 0%, transparent 70%);
+            bottom: -200px;
+            left: -100px;
+            animation: float 25s ease-in-out infinite reverse;
+            filter: blur(60px);
+        }
+
+        .bg-grid {
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 60px 60px;
         }
 
         @keyframes float {
             0%, 100% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(50px, 30px) scale(1.1); }
-            66% { transform: translate(-30px, 50px) scale(0.95); }
+            33% { transform: translate(80px, 50px) scale(1.1); }
+            66% { transform: translate(-50px, 80px) scale(0.95); }
         }
 
         /* Header */
         header {
             position: relative;
-            z-index: 10;
-            padding: 1.5rem 2rem;
-            background: rgba(13, 17, 23, 0.8);
+            z-index: 100;
+            padding: 1.25rem 2rem;
+            background: rgba(10, 10, 15, 0.8);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: sticky;
+            top: 0;
         }
 
         .logo {
@@ -103,50 +124,51 @@
         }
 
         .logo-icon {
-            width: 50px;
-            height: 50px;
+            width: 48px;
+            height: 48px;
             background: var(--gradient-1);
             border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
-            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4);
-            animation: pulse-glow 3s ease-in-out infinite;
+            font-size: 1.4rem;
+            box-shadow: var(--shadow-glow);
+            position: relative;
+            overflow: hidden;
         }
 
-        @keyframes pulse-glow {
-            0%, 100% { box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4); }
-            50% { box-shadow: 0 8px 48px rgba(102, 126, 234, 0.6); }
+        .logo-icon::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 50%);
         }
 
         .logo h1 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.5rem;
+            font-family: 'Sora', sans-serif;
+            font-size: 1.25rem;
             font-weight: 700;
-            background: linear-gradient(135deg, #fff 0%, #8B949E 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
         }
 
         .logo span {
             display: block;
             font-size: 0.75rem;
             color: var(--text-secondary);
-            font-weight: 500;
-            letter-spacing: 0.5px;
+            font-weight: 400;
+            letter-spacing: 0.3px;
         }
 
         .header-actions {
             display: flex;
-            gap: 1rem;
+            gap: 0.75rem;
         }
 
         .btn {
-            padding: 0.75rem 1.5rem;
+            padding: 0.7rem 1.4rem;
             border: none;
             border-radius: 12px;
-            font-family: inherit;
+            font-family: 'Outfit', sans-serif;
             font-weight: 600;
             font-size: 0.9rem;
             cursor: pointer;
@@ -154,12 +176,27 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .btn:hover::before {
+            opacity: 1;
         }
 
         .btn-primary {
             background: var(--primary);
             color: white;
-            box-shadow: 0 4px 20px rgba(8, 102, 255, 0.4);
+            box-shadow: 0 4px 20px rgba(8, 102, 255, 0.35);
         }
 
         .btn-primary:hover {
@@ -175,34 +212,35 @@
         }
 
         .btn-secondary:hover {
-            background: var(--border);
+            background: var(--bg-card-hover);
+            border-color: var(--border-hover);
             transform: translateY(-2px);
         }
 
         /* Main Container */
         .main-container {
             position: relative;
-            z-index: 5;
+            z-index: 10;
             display: grid;
-            grid-template-columns: 1fr 1.2fr 1fr;
-            gap: 2rem;
-            padding: 2rem;
+            grid-template-columns: 380px 1fr 380px;
+            gap: 1.5rem;
+            padding: 1.5rem 2rem 3rem;
             max-width: 1600px;
             margin: 0 auto;
-            min-height: calc(100vh - 100px);
         }
 
         /* Panel Styles */
         .panel {
             background: var(--bg-card);
-            border-radius: 20px;
+            backdrop-filter: blur(20px);
             border: 1px solid var(--border);
+            border-radius: 24px;
             overflow: hidden;
             display: flex;
             flex-direction: column;
             animation: slideUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
             opacity: 0;
-            transform: translateY(30px);
+            transform: translateY(40px);
         }
 
         .panel:nth-child(1) { animation-delay: 0.1s; }
@@ -219,29 +257,31 @@
             border-bottom: 1px solid var(--border);
             display: flex;
             align-items: center;
-            gap: 0.75rem;
+            gap: 1rem;
         }
 
-        .panel-header i {
-            width: 36px;
-            height: 36px;
+        .panel-header-icon {
+            width: 44px;
+            height: 44px;
             background: var(--primary-light);
-            color: var(--primary);
-            border-radius: 10px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1rem;
+            font-size: 1.1rem;
+            color: var(--primary);
         }
 
         .panel-header h2 {
             font-size: 1rem;
             font-weight: 700;
+            letter-spacing: -0.3px;
         }
 
         .panel-header span {
             font-size: 0.75rem;
             color: var(--text-secondary);
+            font-weight: 400;
         }
 
         .panel-content {
@@ -250,9 +290,22 @@
             overflow-y: auto;
         }
 
-        /* Editor Panel */
+        .panel-content::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .panel-content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .panel-content::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 2px;
+        }
+
+        /* Editor Sections */
         .editor-section {
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.75rem;
         }
 
         .editor-section:last-child {
@@ -262,13 +315,13 @@
         .section-label {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 0.75rem;
-            font-size: 0.85rem;
+            gap: 0.6rem;
+            margin-bottom: 0.875rem;
+            font-size: 0.8rem;
             font-weight: 600;
             color: var(--text-secondary);
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
         }
 
         .section-label i {
@@ -280,145 +333,65 @@
         .text-input {
             width: 100%;
             background: var(--bg-dark);
-            border: 2px solid var(--border);
-            border-radius: 12px;
+            border: 1px solid var(--border);
+            border-radius: 14px;
             padding: 1rem;
             color: var(--text-primary);
-            font-family: inherit;
-            font-size: 1rem;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+            line-height: 1.6;
             resize: vertical;
-            min-height: 120px;
+            min-height: 100px;
             transition: all 0.3s ease;
         }
 
         .text-input:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(8, 102, 255, 0.1);
+            box-shadow: 0 0 0 3px var(--primary-light), var(--shadow-soft);
         }
 
         .text-input::placeholder {
             color: var(--text-muted);
         }
 
-        /* Upload Zone */
-        .upload-zone {
-            background: var(--bg-dark);
-            border: 2px dashed var(--border);
-            border-radius: 16px;
-            padding: 2rem;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .upload-zone:hover, .upload-zone.dragover {
-            border-color: var(--primary);
-            background: rgba(8, 102, 255, 0.05);
-        }
-
-        .upload-zone i {
-            font-size: 3rem;
-            color: var(--text-muted);
-            margin-bottom: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .upload-zone:hover i {
-            color: var(--primary);
-            transform: scale(1.1);
-        }
-
-        .upload-zone h3 {
-            font-size: 1rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .upload-zone p {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-        }
-
-        .upload-zone input {
-            display: none;
-        }
-
-        .upload-preview {
-            position: relative;
-            margin-top: 1rem;
-            border-radius: 12px;
-            overflow: hidden;
-        }
-
-        .upload-preview img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 12px;
-        }
-
-        .upload-preview .remove-btn {
-            position: absolute;
-            top: 0.5rem;
-            right: 0.5rem;
-            width: 32px;
-            height: 32px;
-            background: rgba(0, 0, 0, 0.7);
-            border: none;
-            border-radius: 8px;
-            color: white;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-
-        .upload-preview .remove-btn:hover {
-            background: var(--accent);
-        }
-
         /* Template Grid */
         .template-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 0.75rem;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.6rem;
         }
 
         .template-item {
             aspect-ratio: 1;
-            background: var(--bg-dark);
-            border: 2px solid var(--border);
             border-radius: 12px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
         }
 
         .template-item:hover {
-            border-color: var(--primary);
-            transform: scale(1.02);
+            transform: scale(1.08);
+            z-index: 10;
         }
 
         .template-item.active {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(8, 102, 255, 0.2);
+            border-color: white;
+            box-shadow: 0 0 0 2px var(--primary), 0 8px 24px rgba(0, 0, 0, 0.4);
         }
 
         .template-item::before {
             content: '';
             position: absolute;
             inset: 0;
-            opacity: 0.9;
         }
 
         .template-item[data-bg="gradient-1"]::before { background: var(--gradient-1); }
         .template-item[data-bg="gradient-2"]::before { background: var(--gradient-2); }
         .template-item[data-bg="gradient-3"]::before { background: var(--gradient-3); }
-        .template-item[data-bg="dark"]::before { background: #1a1a2e; }
+        .template-item[data-bg="dark"]::before { background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%); }
         .template-item[data-bg="warm"]::before { background: linear-gradient(135deg, #f5af19 0%, #f12711 100%); }
         .template-item[data-bg="cool"]::before { background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%); }
         .template-item[data-bg="nature"]::before { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
@@ -428,63 +401,23 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);
-            width: 36px;
-            height: 36px;
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
+            transform: translate(-50%, -50%) scale(0);
+            width: 28px;
+            height: 28px;
+            background: rgba(255, 255, 255, 0.95);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            opacity: 0;
-            transition: all 0.3s ease;
+            color: var(--primary);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .template-item.active .check-icon {
-            opacity: 1;
-        }
-
-        /* Style Options */
-        .style-options {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
-
-        .style-btn {
-            padding: 0.6rem 1rem;
-            background: var(--bg-dark);
-            border: 2px solid var(--border);
-            border-radius: 10px;
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .style-btn:hover {
-            border-color: var(--primary);
-            color: var(--text-primary);
-        }
-
-        .style-btn.active {
-            background: var(--primary);
-            border-color: var(--primary);
-            color: white;
+            transform: translate(-50%, -50%) scale(1);
         }
 
         /* Color Picker */
-        .color-picker-row {
-            display: flex;
-            gap: 0.5rem;
-            align-items: center;
-            margin-top: 0.75rem;
-        }
-
         .color-presets {
             display: flex;
             gap: 0.5rem;
@@ -492,63 +425,51 @@
         }
 
         .color-preset {
-            width: 36px;
-            height: 36px;
+            width: 38px;
+            height: 38px;
             border-radius: 10px;
             cursor: pointer;
-            border: 3px solid transparent;
-            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
         }
 
         .color-preset:hover {
-            transform: scale(1.1);
+            transform: scale(1.15);
         }
 
         .color-preset.active {
             border-color: white;
-            box-shadow: 0 0 0 2px var(--primary);
+            box-shadow: 0 0 0 2px var(--primary), 0 4px 12px rgba(0, 0, 0, 0.3);
         }
 
-        .custom-color {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .custom-color input[type="color"] {
-            width: 36px;
-            height: 36px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            background: none;
-        }
-
-        /* Font Size Slider */
+        /* Slider */
         .slider-container {
-            margin-top: 0.75rem;
+            background: var(--bg-dark);
+            border-radius: 12px;
+            padding: 1rem;
         }
 
         .slider-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.75rem;
         }
 
         .slider-value {
-            background: var(--bg-elevated);
-            padding: 0.25rem 0.75rem;
+            background: var(--primary);
+            padding: 0.3rem 0.75rem;
             border-radius: 8px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--primary);
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: white;
         }
 
         input[type="range"] {
             width: 100%;
             height: 6px;
-            background: var(--bg-dark);
+            background: var(--border);
             border-radius: 3px;
             outline: none;
             -webkit-appearance: none;
@@ -558,15 +479,55 @@
             -webkit-appearance: none;
             width: 20px;
             height: 20px;
-            background: var(--primary);
+            background: white;
             border-radius: 50%;
             cursor: pointer;
-            box-shadow: 0 2px 10px rgba(8, 102, 255, 0.4);
-            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            transition: all 0.2s ease;
         }
 
         input[type="range"]::-webkit-slider-thumb:hover {
             transform: scale(1.2);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Style Options */
+        .style-options {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .style-btn {
+            flex: 1;
+            padding: 0.75rem;
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .style-btn i {
+            font-size: 1rem;
+        }
+
+        .style-btn:hover {
+            border-color: var(--primary);
+            color: var(--text-primary);
+            background: var(--primary-light);
+        }
+
+        .style-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
         }
 
         /* Preview Panel */
@@ -575,33 +536,33 @@
             flex-direction: column;
             height: fit-content;
             position: sticky;
-            top: 2rem;
+            top: 100px;
         }
 
         .preview-container {
-            background: #F0F2F5;
-            border-radius: 12px;
-            padding: 1rem;
+            background: #E4E6EB;
+            border-radius: 16px;
+            padding: 1.25rem;
             min-height: 500px;
         }
 
         .facebook-post {
             background: white;
-            border-radius: 8px;
+            border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
         .fb-header {
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            padding: 0.75rem 1rem;
+            padding: 0.875rem 1rem;
         }
 
         .fb-avatar {
-            width: 40px;
-            height: 40px;
+            width: 44px;
+            height: 44px;
             background: var(--gradient-1);
             border-radius: 50%;
             display: flex;
@@ -609,12 +570,13 @@
             justify-content: center;
             color: white;
             font-weight: 700;
+            font-size: 1.1rem;
         }
 
         .fb-user-info h4 {
-            color: #1C1E21;
-            font-size: 0.9rem;
-            font-weight: 600;
+            color: #050505;
+            font-size: 0.95rem;
+            font-weight: 700;
         }
 
         .fb-user-info span {
@@ -626,8 +588,8 @@
         }
 
         .fb-content {
-            padding: 0 1rem 1rem;
-            color: #1C1E21;
+            padding: 0 1rem 0.75rem;
+            color: #050505;
             font-size: 0.95rem;
             line-height: 1.5;
         }
@@ -650,40 +612,26 @@
         .fb-media .preview-text {
             position: relative;
             z-index: 2;
-            padding: 2rem;
+            padding: 1.5rem;
             text-align: center;
             color: white;
             font-weight: 700;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
             word-wrap: break-word;
-            max-width: 90%;
-        }
-
-        .fb-media img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .fb-media img + .preview-text {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            max-width: 92%;
+            line-height: 1.3;
         }
 
         .fb-actions {
             display: flex;
             justify-content: space-around;
-            padding: 0.5rem 1rem;
+            padding: 0.4rem 0.5rem;
             border-top: 1px solid #DCE0E4;
         }
 
         .fb-action-btn {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.4rem;
             color: #65676B;
             font-size: 0.9rem;
             font-weight: 600;
@@ -697,22 +645,98 @@
             background: #F0F2F5;
         }
 
-        .fb-action-btn i {
-            font-size: 1.1rem;
+        /* Upload Zone */
+        .upload-zone {
+            background: var(--bg-dark);
+            border: 2px dashed var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
         }
 
-        /* Tools Panel */
+        .upload-zone:hover {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .upload-zone i {
+            font-size: 2.5rem;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+            transition: all 0.3s ease;
+        }
+
+        .upload-zone:hover i {
+            color: var(--primary);
+            transform: scale(1.1);
+        }
+
+        .upload-zone h3 {
+            font-size: 0.95rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .upload-zone p {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .upload-zone input {
+            display: none;
+        }
+
+        .upload-preview {
+            position: relative;
+            border-radius: 14px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .upload-preview img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 14px;
+        }
+
+        .upload-preview .remove-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            width: 32px;
+            height: 32px;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .upload-preview .remove-btn:hover {
+            background: var(--accent);
+            transform: scale(1.1);
+        }
+
+        /* Tool Grid */
         .tool-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 0.75rem;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.5rem;
         }
 
         .tool-item {
             background: var(--bg-dark);
-            border: 2px solid var(--border);
+            border: 1px solid var(--border);
             border-radius: 12px;
-            padding: 1rem;
+            padding: 0.875rem 0.5rem;
             cursor: pointer;
             transition: all 0.3s ease;
             text-align: center;
@@ -720,60 +744,60 @@
 
         .tool-item:hover {
             border-color: var(--primary);
-            transform: translateY(-2px);
+            background: var(--primary-light);
+            transform: translateY(-3px);
         }
 
         .tool-item i {
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             color: var(--primary);
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.3rem;
+            display: block;
         }
 
-        .tool-item h4 {
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-
-        .tool-item p {
+        .tool-item span {
             font-size: 0.7rem;
             color: var(--text-secondary);
-            margin-top: 0.25rem;
+            font-weight: 500;
         }
 
-        /* Effects Section */
+        /* Effect Toggles */
         .effect-toggles {
             display: flex;
             flex-direction: column;
-            gap: 0.75rem;
+            gap: 0.5rem;
         }
 
         .effect-toggle {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0.75rem 1rem;
+            padding: 0.875rem 1rem;
             background: var(--bg-dark);
-            border-radius: 10px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
             cursor: pointer;
             transition: all 0.3s ease;
         }
 
         .effect-toggle:hover {
-            background: var(--bg-elevated);
+            border-color: var(--border-hover);
+            background: var(--bg-card-hover);
         }
 
         .effect-toggle span {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.6rem;
             font-size: 0.9rem;
+            font-weight: 500;
         }
 
         .toggle-switch {
-            width: 48px;
-            height: 26px;
+            width: 44px;
+            height: 24px;
             background: var(--border);
-            border-radius: 13px;
+            border-radius: 12px;
             position: relative;
             transition: all 0.3s ease;
         }
@@ -781,13 +805,14 @@
         .toggle-switch::before {
             content: '';
             position: absolute;
-            width: 22px;
-            height: 22px;
+            width: 18px;
+            height: 18px;
             background: white;
             border-radius: 50%;
-            top: 2px;
-            left: 2px;
-            transition: all 0.3s ease;
+            top: 3px;
+            left: 3px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         .effect-toggle.active .toggle-switch {
@@ -795,49 +820,47 @@
         }
 
         .effect-toggle.active .toggle-switch::before {
-            left: 24px;
+            left: 23px;
         }
 
-        /* Export Section */
+        /* Export Options */
         .export-options {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 0.75rem;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.6rem;
         }
 
         .export-btn {
-            padding: 1rem;
+            padding: 1rem 0.75rem;
             border: none;
-            border-radius: 12px;
+            border-radius: 14px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.4rem;
         }
 
         .export-btn i {
             font-size: 1.5rem;
-            margin-bottom: 0.5rem;
         }
 
         .export-btn h4 {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 600;
-        }
-
-        .export-btn p {
-            font-size: 0.7rem;
-            opacity: 0.8;
         }
 
         .export-btn.primary {
             background: var(--gradient-1);
             color: white;
-            grid-column: span 2;
+            grid-column: span 3;
         }
 
         .export-btn.primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.4);
         }
 
         .export-btn.secondary {
@@ -847,7 +870,9 @@
         }
 
         .export-btn.secondary:hover {
-            background: var(--border);
+            background: var(--bg-card-hover);
+            border-color: var(--border-hover);
+            transform: translateY(-3px);
         }
 
         /* Toast Notification */
@@ -855,15 +880,16 @@
             position: fixed;
             bottom: 2rem;
             left: 50%;
-            transform: translateX(-50%) translateY(100px);
+            transform: translateX(-50%) translateY(120px);
             background: var(--bg-elevated);
+            backdrop-filter: blur(20px);
             color: var(--text-primary);
-            padding: 1rem 2rem;
-            border-radius: 12px;
+            padding: 1rem 1.75rem;
+            border-radius: 14px;
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
             border: 1px solid var(--border);
             z-index: 1000;
             opacity: 0;
@@ -884,25 +910,26 @@
         }
 
         /* Responsive */
-        @media (max-width: 1200px) {
+        @media (max-width: 1400px) {
             .main-container {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr 1fr;
             }
             
             .preview-panel {
+                grid-column: span 2;
                 position: relative;
                 top: 0;
             }
         }
 
-        @media (max-width: 768px) {
-            header {
-                flex-direction: column;
-                gap: 1rem;
+        @media (max-width: 900px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                padding: 1rem;
             }
             
-            .main-container {
-                padding: 1rem;
+            .preview-panel {
+                grid-column: span 1;
             }
             
             .template-grid {
@@ -910,9 +937,34 @@
             }
         }
 
+        @media (max-width: 600px) {
+            header {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+            
+            .template-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 0.5rem;
+            }
+            
+            .tool-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .export-options {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .export-btn.primary {
+                grid-column: span 2;
+            }
+        }
+
         /* Scrollbar */
         ::-webkit-scrollbar {
-            width: 8px;
+            width: 6px;
         }
 
         ::-webkit-scrollbar-track {
@@ -921,27 +973,24 @@
 
         ::-webkit-scrollbar-thumb {
             background: var(--border);
-            border-radius: 4px;
+            border-radius: 3px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: var(--text-muted);
+            background: var(--border-hover);
         }
 
-        /* Animations */
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
-        }
-
-        .shake {
-            animation: shake 0.3s ease;
+        /* Selection */
+        ::selection {
+            background: var(--primary);
+            color: white;
         }
     </style>
 </head>
 <body>
-    <div class="bg-animation"></div>
+    <div class="bg-animation">
+        <div class="bg-grid"></div>
+    </div>
 
     <header>
         <div class="logo">
@@ -950,7 +999,7 @@
             </div>
             <div>
                 <h1>Facebook Content Maker</h1>
-                <span>Buat konten menarik untuk Facebook Anda</span>
+                <span>Buat konten menarik untuk Facebook</span>
             </div>
         </div>
         <div class="header-actions">
@@ -967,27 +1016,29 @@
         <!-- Editor Panel -->
         <div class="panel">
             <div class="panel-header">
-                <i class="fas fa-edit"></i>
+                <div class="panel-header-icon">
+                    <i class="fas fa-pen-nib"></i>
+                </div>
                 <div>
                     <h2>Editor</h2>
-                    <span>Kustomisasi konten Anda</span>
+                    <span>Kustomisasi konten</span>
                 </div>
             </div>
             <div class="panel-content">
                 <!-- Text Input -->
                 <div class="editor-section">
                     <div class="section-label">
-                        <i class="fas fa-font"></i>
+                        <i class="fas fa-keyboard"></i>
                         Teks Postingan
                     </div>
-                    <textarea class="text-input" id="postText" placeholder="Tulis teks postingan Anda di sini..." oninput="updatePreview()">Buat konten yang menarik untuk meningkatkan engagement!</parameter>
+                    <textarea class="text-input" id="postText" placeholder="Ketik teks postingan Anda di sini..." oninput="updatePreview()">Buat konten yang menarik untuk meningkatkan engagement!</parameter>
                 </div>
 
                 <!-- Background Template -->
                 <div class="editor-section">
                     <div class="section-label">
-                        <i class="fas fa-palette"></i>
-                        Template Latar Belakang
+                        <i class="fas fa-layer-group"></i>
+                        Template Background
                     </div>
                     <div class="template-grid" id="templateGrid">
                         <div class="template-item active" data-bg="gradient-1" onclick="selectTemplate(this)">
@@ -1020,7 +1071,7 @@
                 <!-- Text Color -->
                 <div class="editor-section">
                     <div class="section-label">
-                        <i class="fas fa-tint"></i>
+                        <i class="fas fa-palette"></i>
                         Warna Teks
                     </div>
                     <div class="color-presets">
@@ -1044,27 +1095,30 @@
                     <div class="slider-container">
                         <div class="slider-header">
                             <span>Ukuran Teks</span>
-                            <span class="slider-value" id="fontSizeValue">32px</span>
+                            <span class="slider-value" id="fontSizeValue">36px</span>
                         </div>
-                        <input type="range" id="fontSizeSlider" min="16" max="64" value="32" oninput="updateFontSize(this.value)">
+                        <input type="range" id="fontSizeSlider" min="16" max="72" value="36" oninput="updateFontSize(this.value)">
                     </div>
                 </div>
 
                 <!-- Text Style -->
                 <div class="editor-section">
                     <div class="section-label">
-                        <i class="fas fa-magic"></i>
-                        Gaya Teks
+                        <i class="fas fa-type"></i>
+                        Style Teks
                     </div>
                     <div class="style-options">
                         <button class="style-btn active" data-style="normal" onclick="selectTextStyle(this)">
-                            <i class="fas fa-font"></i> Normal
+                            <i class="fas fa-font"></i>
+                            Normal
                         </button>
                         <button class="style-btn" data-style="bold" onclick="selectTextStyle(this)">
-                            <i class="fas fa-bold"></i> Bold
+                            <i class="fas fa-bold"></i>
+                            Bold
                         </button>
                         <button class="style-btn" data-style="italic" onclick="selectTextStyle(this)">
-                            <i class="fas fa-italic"></i> Italic
+                            <i class="fas fa-italic"></i>
+                            Italic
                         </button>
                     </div>
                 </div>
@@ -1074,10 +1128,12 @@
         <!-- Preview Panel -->
         <div class="panel preview-panel">
             <div class="panel-header">
-                <i class="fas fa-eye"></i>
+                <div class="panel-header-icon">
+                    <i class="fas fa-eye"></i>
+                </div>
                 <div>
                     <h2>Preview</h2>
-                    <span>Pratinjau postingan Anda</span>
+                    <span>Pratinjau postingan Facebook</span>
                 </div>
             </div>
             <div class="panel-content">
@@ -1087,13 +1143,13 @@
                             <div class="fb-avatar">U</div>
                             <div class="fb-user-info">
                                 <h4>User Facebook</h4>
-                                <span><i class="fas fa-globe-americas"></i> Baru saja • <i class="fas fa-user-friends"></i></span>
+                                <span><i class="fas fa-globe-americas"></i> 2 jam yang lalu · <i class="fab fa-facebook"></i></span>
                             </div>
                         </div>
                         <div class="fb-content" id="fbContent">Buat konten yang menarik untuk meningkatkan engagement!</div>
                         <div class="fb-media" id="fbMedia">
                             <div class="preview-bg" id="previewBg" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                                <div class="preview-text" id="previewText" style="font-size: 32px; color: #FFFFFF;">
+                                <div class="preview-text" id="previewText" style="font-size: 36px; color: #FFFFFF;">
                                     Buat konten yang menarik untuk meningkatkan engagement!
                                 </div>
                             </div>
@@ -1111,7 +1167,9 @@
         <!-- Tools Panel -->
         <div class="panel">
             <div class="panel-header">
-                <i class="fas fa-tools"></i>
+                <div class="panel-header-icon">
+                    <i class="fas fa-wand-magic-sparkles"></i>
+                </div>
                 <div>
                     <h2>Tools & Export</h2>
                     <span>Fitur tambahan</span>
@@ -1125,15 +1183,15 @@
                         Upload Gambar
                     </div>
                     <div class="upload-zone" id="uploadZone" onclick="document.getElementById('imageInput').click()">
-                        <i class="fas fa-cloud-upload-alt"></i>
-                        <h3>Klik atau seret file</h3>
-                        <p>JPG, PNG, atau GIF (Maks. 5MB)</p>
+                        <i class="fas fa-cloud-arrow-up"></i>
+                        <h3>Drag & drop atau klik</h3>
+                        <p>JPG, PNG, GIF • Maks 5MB</p>
                         <input type="file" id="imageInput" accept="image/*" onchange="handleImageUpload(this)">
                     </div>
                     <div class="upload-preview" id="uploadPreview" style="display: none;">
                         <img id="previewImage" src="" alt="Preview">
                         <button class="remove-btn" onclick="removeImage()">
-                            <i class="fas fa-times"></i>
+                            <i class="fas fa-xmark"></i>
                         </button>
                     </div>
                 </div>
@@ -1142,28 +1200,24 @@
                 <div class="editor-section">
                     <div class="section-label">
                         <i class="fas fa-bolt"></i>
-                        Tools Cepat
+                        Quick Emoji
                     </div>
                     <div class="tool-grid">
                         <div class="tool-item" onclick="addEmoji('🔥')">
                             <i class="fas fa-fire"></i>
-                            <h4>Fire</h4>
-                            <p>Emoji api</p>
+                            <span>Fire</span>
                         </div>
                         <div class="tool-item" onclick="addEmoji('💡')">
                             <i class="fas fa-lightbulb"></i>
-                            <h4>Ideas</h4>
-                            <p>Emoji ide</p>
+                            <span>Ideas</span>
                         </div>
                         <div class="tool-item" onclick="addEmoji('❤️')">
                             <i class="fas fa-heart"></i>
-                            <h4>Love</h4>
-                            <p>Emoji cinta</p>
+                            <span>Love</span>
                         </div>
                         <div class="tool-item" onclick="addEmoji('🚀')">
                             <i class="fas fa-rocket"></i>
-                            <h4>Rocket</h4>
-                            <p>Emoji roket</p>
+                            <span>Rocket</span>
                         </div>
                     </div>
                 </div>
@@ -1171,16 +1225,16 @@
                 <!-- Effects -->
                 <div class="editor-section">
                     <div class="section-label">
-                        <i class="fas fa-wand-magic-sparkles"></i>
-                        Efek
+                        <i class="fas fa-sparkles"></i>
+                        Efek Teks
                     </div>
                     <div class="effect-toggles">
                         <div class="effect-toggle" id="shadowToggle" onclick="toggleEffect('shadow')">
-                            <span><i class="fas fa-square"></i> Bayangan Teks</span>
+                            <span><i class="fas fa-shadow"></i> Text Shadow</span>
                             <div class="toggle-switch"></div>
                         </div>
                         <div class="effect-toggle active" id="gradientToggle" onclick="toggleEffect('gradient')">
-                            <span><i class="fas fa-gradient"></i> Gradien Teks</span>
+                            <span><i class="fas fa-gradient"></i> Text Gradient</span>
                             <div class="toggle-switch"></div>
                         </div>
                     </div>
@@ -1194,17 +1248,16 @@
                     </div>
                     <div class="export-options">
                         <button class="export-btn primary" onclick="downloadPost()">
-                            <i class="fas fa-download"></i>
+                            <i class="fas fa-image"></i>
                             <h4>Download PNG</h4>
-                            <p>Unduh gambar kualitas tinggi</p>
                         </button>
                         <button class="export-btn secondary" onclick="copyToClipboard()">
                             <i class="fas fa-copy"></i>
-                            <h4>Salin Teks</h4>
+                            <h4>Copy</h4>
                         </button>
                         <button class="export-btn secondary" onclick="sharePost()">
-                            <i class="fas fa-share-alt"></i>
-                            <h4>Bagikan</h4>
+                            <i class="fas fa-share-nodes"></i>
+                            <h4>Share</h4>
                         </button>
                     </div>
                 </div>
@@ -1214,7 +1267,7 @@
 
     <!-- Toast Notification -->
     <div class="toast" id="toast">
-        <i class="fas fa-check-circle"></i>
+        <i class="fas fa-circle-check"></i>
         <span id="toastMessage">Berhasil!</span>
     </div>
 
@@ -1232,7 +1285,7 @@
             'gradient-1': 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
             'gradient-2': 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
             'gradient-3': 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-            'dark': 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
+            'dark': 'linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%)',
             'warm': 'linear-gradient(135deg, #f5af19 0%, #f12711 100%)',
             'cool': 'linear-gradient(135deg, #00c6ff 0%, #0072ff 100%)',
             'nature': 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)',
@@ -1241,9 +1294,9 @@
 
         // Text styles
         const textStyles = {
-            'normal': { fontWeight: 'normal', fontStyle: 'normal' },
-            'bold': { fontWeight: 'bold', fontStyle: 'normal' },
-            'italic': { fontWeight: 'normal', fontStyle: 'italic' }
+            'normal': { fontWeight: '500', fontStyle: 'normal' },
+            'bold': { fontWeight: '700', fontStyle: 'normal' },
+            'italic': { fontWeight: '500', fontStyle: 'italic' }
         };
 
         // Select template
@@ -1302,15 +1355,14 @@
             const previewText = document.getElementById('previewText');
             previewText.textContent = text;
             previewText.style.fontSize = fontSize + 'px';
-            previewText.style.color = currentTextColor;
             previewText.style.fontWeight = textStyles[currentTextStyle].fontWeight;
             previewText.style.fontStyle = textStyles[currentTextStyle].fontStyle;
             
             // Text shadow
             if (textShadowEnabled) {
-                previewText.style.textShadow = '2px 2px 8px rgba(0, 0, 0, 0.5)';
+                previewText.style.textShadow = '0 4px 20px rgba(0, 0, 0, 0.5)';
             } else {
-                previewText.style.textShadow = '2px 2px 4px rgba(0, 0, 0, 0.3)';
+                previewText.style.textShadow = '0 2px 8px rgba(0, 0, 0, 0.3)';
             }
             
             // Text gradient
@@ -1319,18 +1371,19 @@
                 previewText.style.backgroundClip = 'text';
                 previewText.style.webkitBackgroundClip = 'text';
                 previewText.style.webkitTextFillColor = 'transparent';
+                previewText.style.color = 'transparent';
             } else {
                 previewText.style.background = 'none';
                 previewText.style.backgroundClip = 'initial';
                 previewText.style.webkitBackgroundClip = 'initial';
-                previewText.style.webkitTextFillColor = currentTextColor;
+                previewText.style.webkitTextFillColor = 'initial';
+                previewText.style.color = currentTextColor;
             }
             
             // Update background
             const previewBg = document.getElementById('previewBg');
             if (uploadedImage) {
                 previewBg.style.background = `url(${uploadedImage}) center/cover`;
-                previewBg.style.backgroundColor = templateBackgrounds[currentTemplate];
             } else {
                 previewBg.style.background = templateBackgrounds[currentTemplate];
             }
@@ -1353,7 +1406,7 @@
                     document.getElementById('uploadPreview').style.display = 'block';
                     document.getElementById('uploadZone').style.display = 'none';
                     updatePreview();
-                    showToast('Gambar berhasil diupload!', 'success');
+                    showToast('Gambar berhasil diupload!');
                 };
                 reader.readAsDataURL(file);
             }
@@ -1366,7 +1419,7 @@
             document.getElementById('uploadPreview').style.display = 'none';
             document.getElementById('uploadZone').style.display = 'block';
             updatePreview();
-            showToast('Gambar berhasil dihapus', 'success');
+            showToast('Gambar berhasil dihapus');
         }
 
         // Add emoji
@@ -1383,29 +1436,42 @@
 
         // Download post
         function downloadPost() {
-            showToast('Fitur download akan segera hadir!', 'success');
+            showToast('Fitur download dalam pengembangan!');
         }
 
         // Copy to clipboard
         function copyToClipboard() {
             const text = document.getElementById('postText').value;
             navigator.clipboard.writeText(text).then(() => {
-                showToast('Teks berhasil disalin!', 'success');
+                showToast('Teks berhasil disalin!');
             }).catch(() => {
-                showToast('Gagal menyalin teks', 'error');
+                showToast('Gagal menyalin teks');
             });
         }
 
         // Share post
         function sharePost() {
-            showToast('Fitur share akan segera hadir!', 'success');
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Facebook Content Maker',
+                    text: document.getElementById('postText').value,
+                    url: window.location.href
+                }).then(() => {
+                    showToast('Berhasil dibagikan!');
+                }).catch(() => {
+                    showToast('Gagal membagikan');
+                });
+            } else {
+                copyToClipboard();
+                showToast('Link disalin!');
+            }
         }
 
         // Reset all
         function resetAll() {
-            document.getElementById('postText').value = '';
-            document.getElementById('fontSizeSlider').value = 32;
-            document.getElementById('fontSizeValue').textContent = '32px';
+            document.getElementById('postText').value = 'Buat konten yang menarik untuk meningkatkan engagement!';
+            document.getElementById('fontSizeSlider').value = 36;
+            document.getElementById('fontSizeValue').textContent = '36px';
             
             document.querySelectorAll('.template-item').forEach(item => item.classList.remove('active'));
             document.querySelector('.template-item[data-bg="gradient-1"]').classList.add('active');
@@ -1419,9 +1485,14 @@
             document.querySelector('.style-btn[data-style="normal"]').classList.add('active');
             currentTextStyle = 'normal';
             
+            document.getElementById('shadowToggle').classList.remove('active');
+            document.getElementById('gradientToggle').classList.add('active');
+            textShadowEnabled = false;
+            textGradientEnabled = true;
+            
             removeImage();
             updatePreview();
-            showToast('Semua pengaturan direset!', 'success');
+            showToast('Semua pengaturan direset!');
         }
 
         // Show toast
