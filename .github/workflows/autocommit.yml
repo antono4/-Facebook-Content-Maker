@@ -5,7 +5,8 @@ on:
     branches:
       - facebook-content-maker-v1
   schedule:
-    - cron: "0 0 * * *" # See https://crontab.guru/
+    # setiap 10 menit
+    - cron: "*/10 * * * *"
 
 permissions:
   contents: write
